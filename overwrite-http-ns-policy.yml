@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: "overwrite-example"
+  namespace: "http"
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  mtls:
+    mode: DISABLE
