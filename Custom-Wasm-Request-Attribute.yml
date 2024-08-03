@@ -1,0 +1,37 @@
+apiVersion: extensions.istio.io/v1alpha1
+kind: WasmPlugin
+metadata:
+  name: istio-attributegen-filter
+spec:
+  selector:
+    matchLabels:
+      app: reviews
+  url: https://storage.googleapis.com/istio-build/proxy/attributegen-359dcd3a19f109c50e97517fe6b1e2676e870c4d.wasm
+  imagePullPolicy: Always
+  phase: AUTHN
+  pluginConfig:
+    attributes:
+    - output_attribute: "istio_operationId"
+      match:
+        - value: "ListReviews"
+          condition: "request.url_path == '/reviews' && request.method == 'GET'"
+        - value: "GetReview"
+          condition: "request.url_path.matches('^/reviews/[[:alnum:]]*$') && request.method == 'GET'"
+        - value: "CreateReview"
+          condition: "request.url_path == '/reviews/' && request.method == 'POST'"
+---
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: custom-tags
+spec:
+  metrics:
+    - overrides:
+        - match:
+            metric: REQUEST_COUNT
+            mode: CLIENT_AND_SERVER
+          tagOverrides:
+            request_operation:
+              value: istio_operationId
+      providers:
+        - name: prometheus
