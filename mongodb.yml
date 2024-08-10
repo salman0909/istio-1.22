@@ -29,17 +29,3 @@ spec:
       volumes:
       - name: data-db
         emptyDir: {}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongodb
-  labels:
-    app: mongodb
-    service: mongodb
-spec:
-  ports:
-  - port: 27017
-    name: mongo
-  selector:
-    app: mongodb
