@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: fortio-deploy
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: fortio
