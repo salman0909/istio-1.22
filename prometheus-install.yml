@@ -472,7 +472,7 @@ spec:
       app.kubernetes.io/component: server
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/instance: prometheus
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 10
   strategy:
     type: Recreate
